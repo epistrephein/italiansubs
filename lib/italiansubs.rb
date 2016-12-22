@@ -3,7 +3,7 @@ require 'faraday_middleware'
 require 'json'
 
 module ItalianSubs
-  VERSION = '0.1.0'.freeze
+  VERSION = '0.1.1'.freeze
   API_KEY = '6f53c6a55288ff82591c881eda98cd8f'.freeze
   API_BASEURL = 'https://api.italiansubs.net/api/rest'.freeze
   USER_AGENT = 'italiansubs-rubygem'.freeze
@@ -15,10 +15,12 @@ module ItalianSubs
     attr_accessor :authcode
 
     def initialize(username = nil, password = nil)
-      return unless username.nil? || password.nil?
+      return self if username.nil? || password.nil?
       login!(username, password)
       sleep 1
     end
+
+    # SHOWS
 
     # list of shows
     def shows
@@ -61,6 +63,8 @@ module ItalianSubs
       res.body['Itasa_Rest2_Server_Shows']['search']['shows'].values
     end
 
+    # SUBTITLES
+
     # show subs
     def subtitles(show_id, version, page = 1)
       res = call(
@@ -97,6 +101,8 @@ module ItalianSubs
       res.body['Itasa_Rest2_Server_Subtitles']['search']['subtitles'].values
     end
 
+    # USER
+
     # user login
     def login!(username, password)
       res = call(
@@ -120,8 +126,11 @@ module ItalianSubs
       res.body['Itasa_Rest2_Server_Users']['direct']['user']
     end
 
+    # MYITASA
+
     # list myItasa shows
     def myitasa_shows
+      raise APIError, 'not logged in' if @authcode.nil?
       res = call(
         'myitasa/shows',
         'authcode' => @authcode
@@ -132,6 +141,7 @@ module ItalianSubs
 
     # show last myItasa subtitles
     def myitasa_last_subtitles(page = nil)
+      raise APIError, 'not logged in' if @authcode.nil?
       res = call(
         'myitasa/lastsubtitles',
         'authcode' => @authcode,
@@ -141,19 +151,9 @@ module ItalianSubs
       res.body['Itasa_Rest2_Server_Myitasa']['lastsubtitles']['subtitles'].values
     end
 
-    # show myItasa next episodes
-    def myitasa_next_episodes(page = nil)
-      res = call(
-        'myitasa/nextepisodes',
-        'authcode' => @authcode,
-        'page' => page
-      )
-
-      res.body['Itasa_Rest2_Server_Myitasa']['nextepisodes']['episodes'].values
-    end
-
     # add a show to myItasa
     def myitasa_add_show(show_id, version)
+      raise APIError, 'not logged in' if @authcode.nil?
       res = call(
         'myitasa/addShowToPref',
         'authcode' => @authcode,
@@ -166,6 +166,7 @@ module ItalianSubs
 
     # remove a show from myItasa
     def myitasa_remove_show(show_id, version)
+      raise APIError, 'not logged in' if @authcode.nil?
       res = call(
         'myitasa/removeShowFromPref',
         'authcode' => @authcode,
