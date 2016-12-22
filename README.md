@@ -1,4 +1,5 @@
 # italiansubs
+[![Gem Version](https://badge.fury.io/rb/italiansubs.svg)](https://badge.fury.io/rb/italiansubs) [![Code Climate](https://codeclimate.com/github/epistrephein/italiansubs/badges/gpa.svg)](https://codeclimate.com/github/epistrephein/italiansubs) [![Dependency Status](https://gemnasium.com/badges/github.com/epistrephein/italiansubs.svg)](https://gemnasium.com/github.com/epistrephein/italiansubs)
 
 A ruby wrapper for Italian Subs API.
 
@@ -101,9 +102,9 @@ Valid `version` values are: `normale`, `1080i`, `1080p`, `720p`, `bdrip`, `blura
 
 ## TODOs
 
-- [ ] add News methods
-- [ ] add Users methods
-- [ ] add MyItasa methods
+- [ ] add `News` methods
+- [ ] add `Users` methods
+- [ ] add `MyItasa` methods
 
 
 ## Contributing
