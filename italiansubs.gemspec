@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'italiansubs'
-  s.version       = '0.1.0'
+  s.version       = '0.1.1'
   s.date          = '2016-12-22'
   s.summary       = 'Ruby wrapper for Italian Subs API'
   s.description   = 'A ruby wrapper for Italian Subs API.'

@@ -11,7 +11,7 @@ gem install italiansubs
 
 ## Usage
 
-This gem wraps some of the API methods available from Italian Subs. The aim is to cover all of them, so stay tuned and check the CHANGELOG.
+This gem wraps some of the API methods available from Italian Subs.
 
 First, require the gem and initialize a new `ItalianSubs::API` object.
 
@@ -98,14 +98,78 @@ itasa.search_subtitle('6x10', 2291, '720p')
 # => [{"id"=>"69168", "name"=>"Game of Thrones 6x10", "version"=>"720p", "show_id"=>"2291", "show_name"=>"Game of Thrones"}]
 ```
 
+#### User
+
+Login to Italian Subs with your username and password. This will store a string as `@authcode` and passed along the various methods that requires login.
+
+```ruby
+itasa.login('myUsername', 'myPassword')
+# => "aaaabbbbccccdddd1111222233334444"
+
+itasa.authcode
+# => "aaaabbbbccccdddd1111222233334444"
+```
+
+Since authcode doesn't renew and is tied to user, you it can be pass at initialization time if needed.
+
+```ruby
+itasa = ItalianSubs::API.new('myUsername', 'myPassword')
+# => #<ItalianSubs::API:0x007ff274712e78 @authcode="aaaabbbbccccdddd1111222233334444">
+```
+
+Show user info. `@authcode` must be set.
+
+```ruby
+itasa.user_profile
+# => {"id"=>"000000",
+#     "name"=>"myName",
+#     "username"=>"myUsername",
+# ...
+```
+
+#### MyItasa
+All `myitasa` methods require `@authcode` to be set.
+
+List all myItasa shows.
+
+```ruby
+itasa.myitasa_shows
+# => [{"id"=>"3149", "name"=>"Black Mirror", "versions"=>{"key_0"=>"720p"}},
+#     {"id"=>"4838", "name"=>"Carnivale", "versions"=>{"key_0"=>"WEB-DL"}},
+# ...
+```
+
+Show myItasa last added subtitles, with optional `page`.
+
+```ruby
+itasa.myitasa_last_subtitles
+# => [{"id"=>"72398",
+#      "name"=>"Humans 2x03",
+#      "version"=>"720p",
+# ...
+```
+
+Add show to myItasa. `show_id` and `version` are required parameters. Returns all myItasa shows.
+
+```ruby
+itasa.myitasa_add_show(2132, '720p')
+# => [{"id"=>"2132", "name"=>"$#*! My Dad Says", "versions"=>{"key_0"=>"720p"}},
+#     {"id"=>"3149", "name"=>"Black Mirror", "versions"=>{"key_0"=>"720p"}},
+# ...
+```
+
+Remove show from myItasa. `show_id` and `version` are required parameters. Returns all myItasa shows.
+
+```ruby
+itasa.myitasa_remove_show(2132, '720p')
+# => [{"id"=>"3149", "name"=>"Black Mirror", "versions"=>{"key_0"=>"720p"}},
+#     {"id"=>"4838", "name"=>"Carnivale", "versions"=>{"key_0"=>"WEB-DL"}},
+# ...
+```
+
+#### Parameters
+
 Valid `version` values are: `normale`, `1080i`, `1080p`, `720p`, `bdrip`, `bluray`, `dvdrip`, `hdtv`, `hr`, `web-dl`.
-
-## TODOs
-
-- [ ] add `News` methods
-- [ ] add `Users` methods
-- [ ] add `MyItasa` methods
-
 
 ## Contributing
 
