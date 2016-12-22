@@ -102,7 +102,7 @@ module ItalianSubs
       end
       raise RequestError, res.reason_phrase unless res.success?
       unless res.body.keys.any? { |k| k =~ /^Itasa_Rest2_Server/ }
-        raise APIError, res['root']['error']['message']
+        raise APIError, res.body['root']['error']['message']
       end
 
       res
